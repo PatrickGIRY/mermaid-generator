@@ -7,13 +7,14 @@ import tools.mermaid.generator.data.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ToMarkdownTest {
 
     @Nested
-    class enerate_mermaid_code_block_to_markdown {
+    class generate_mermaid_code_block_to_markdown {
         @Test
         void with_no_diagram() {
             final var stringWriter = new StringWriter();
@@ -21,11 +22,11 @@ class ToMarkdownTest {
 
             ToMarkdown.convert(mermaid, new PrintWriter(stringWriter));
 
-            assertThat(stringWriter.toString()).isEqualTo("""
+            assertThat(stringWriter.toString()).isEqualTo(toLines("""
                     ```mermaid
                     ```
                                         
-                    """);
+                    """));
         }
 
         @Test
@@ -35,13 +36,13 @@ class ToMarkdownTest {
 
             ToMarkdown.convert(mermaid, new PrintWriter(stringWriter));
 
-            assertThat(stringWriter.toString()).isEqualTo("""
+            assertThat(stringWriter.toString()).isEqualTo(toLines("""
                     ```mermaid
                     classDiagram
                     direction LR
                     ```
                                         
-                    """);
+                    """));
         }
 
         @Test
@@ -52,7 +53,7 @@ class ToMarkdownTest {
 
             ToMarkdown.convert(mermaid, new PrintWriter(stringWriter));
 
-            assertThat(stringWriter.toString()).isEqualTo("""
+            assertThat(stringWriter.toString()).isEqualTo(toLines("""
                     ```mermaid
                     classDiagram
                     direction LR
@@ -60,7 +61,7 @@ class ToMarkdownTest {
                     }
                     ```
                                         
-                    """);
+                    """));
         }
 
         @Test
@@ -71,7 +72,7 @@ class ToMarkdownTest {
 
             ToMarkdown.convert(mermaid, new PrintWriter(stringWriter));
 
-            assertThat(stringWriter.toString()).isEqualTo("""
+            assertThat(stringWriter.toString()).isEqualTo(toLines("""
                     ```mermaid
                     classDiagram
                     direction LR
@@ -80,7 +81,7 @@ class ToMarkdownTest {
                     }
                     ```
                                         
-                    """);
+                    """));
         }
 
         @Test
@@ -97,7 +98,7 @@ class ToMarkdownTest {
 
             ToMarkdown.convert(mermaid, new PrintWriter(stringWriter));
 
-            assertThat(stringWriter.toString()).isEqualTo("""
+            assertThat(stringWriter.toString()).isEqualTo(toLines("""
                     ```mermaid
                     classDiagram
                     direction LR
@@ -112,7 +113,7 @@ class ToMarkdownTest {
                     }
                     ```
                                         
-                    """);
+                    """));
         }
 
         @Test
@@ -145,7 +146,7 @@ class ToMarkdownTest {
 
             ToMarkdown.convert(mermaid, new PrintWriter(stringWriter));
 
-            assertThat(stringWriter.toString()).isEqualTo("""
+            assertThat(stringWriter.toString()).isEqualTo(toLines("""
                     ```mermaid
                     classDiagram
                     direction LR
@@ -171,9 +172,13 @@ class ToMarkdownTest {
                     ClassDiagram-->Direction
                     ```
                                         
-                    """);
+                    """));
             System.out.println(stringWriter);
         }
+    }
+
+    private static String toLines(String lines) {
+        return lines.lines().map(l -> l + System.lineSeparator()).collect(Collectors.joining());
     }
 
 }
